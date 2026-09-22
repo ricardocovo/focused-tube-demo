@@ -1,0 +1,31 @@
+.sub-channel-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #fff;
+  background-color: var(--ft-primary);
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.sub-channel-btn:hover {
+  background-color: var(--ft-primary-hover);
+}
+
+.sub-channel-btn--selected {
+  background-color: var(--ft-success-bg);
+  color: var(--ft-success);
+  border-color: rgba(30, 142, 62, 0.18);
+}
+
+.sub-channel-btn--selected:hover {
+  background-color: var(--ft-success-bg);
+}
+
+.sub-channel-btn--saving {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

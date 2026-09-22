@@ -1,0 +1,223 @@
+.profiles-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.profiles-title {
+  color: var(--ft-text);
+  margin: 0;
+}
+
+.profiles-new-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.profiles-new-btn:hover {
+  background-color: var(--ft-primary-hover);
+}
+
+.profiles-create-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--ft-surface);
+  border-radius: 12px;
+  border: 1px solid var(--ft-border);
+}
+
+.profiles-create-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profiles-create-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ft-text-secondary);
+}
+
+.profiles-create-input {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--ft-border);
+  border-radius: 8px;
+  outline: none;
+  font-family: var(--ft-font);
+}
+
+.profiles-create-btn {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border: none;
+  border-radius: 999px;
+}
+
+.profiles-create-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profiles-create-btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.profiles-error {
+  color: var(--ft-danger);
+  margin-bottom: 12px;
+}
+
+.profiles-loading {
+  color: var(--ft-text-tertiary);
+}
+
+.profiles-empty {
+  color: var(--ft-text-secondary);
+}
+
+.profiles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profiles-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 20px;
+  padding: 18px;
+  background: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+  border-radius: 18px;
+  box-shadow: var(--ft-shadow-sm);
+}
+
+.profiles-item-main {
+  min-width: 0;
+}
+
+.profiles-item-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.profiles-item-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.profiles-item-name {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.profiles-item-default {
+  font-size: 11px;
+  padding: 2px 8px;
+  background: var(--ft-success-bg);
+  border-radius: 10px;
+  color: var(--ft-success);
+  font-weight: 600;
+}
+
+.profiles-item-public {
+  font-size: 11px;
+  padding: 4px 10px;
+  background: var(--ft-chip-bg);
+  border-radius: 999px;
+  color: var(--ft-text-secondary);
+  font-weight: 600;
+  border: 1px solid var(--ft-border);
+}
+
+.profiles-item-public--on {
+  background: var(--ft-info-bg, #e0f0ff);
+  color: var(--ft-info, #1a73e8);
+  border-color: transparent;
+}
+
+.profiles-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ft-text-tertiary);
+}
+
+.profiles-item-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profiles-item-visibility {
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--ft-surface-raised);
+  border: 1px solid var(--ft-border);
+}
+
+.profiles-item-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profiles-edit-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--ft-link);
+  background: transparent;
+  border: 1px solid var(--ft-border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.profiles-delete-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--ft-danger);
+  background: transparent;
+  border: 1px solid var(--ft-danger);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .profiles-create-form,
+  .profiles-item {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profiles-item-actions {
+    justify-content: flex-start;
+  }
+
+  .profiles-create-btn {
+    align-self: flex-start;
+  }
+}

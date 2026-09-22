@@ -1,0 +1,28 @@
+
+# APM dependencies
+apm_modules/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Auto-generated TypeScript declaration files
+*.config.d.ts
+
+# Environment
+.env
+
+# Database
+*.db
+*.db-journal
+
+# OS
+.DS_Store
+
+# Source maps
+*.js.map
+
+# Azure Developer CLI
+.azure/

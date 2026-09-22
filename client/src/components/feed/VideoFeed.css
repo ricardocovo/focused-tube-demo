@@ -1,0 +1,85 @@
+.video-feed-error {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.video-feed-error-text {
+  font-size: 16px;
+  color: var(--ft-danger);
+  margin-bottom: 16px;
+}
+
+.video-feed-retry-btn {
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-danger);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.video-feed-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.video-feed-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.video-feed-empty-text {
+  font-size: 16px;
+  color: var(--ft-text-secondary);
+  margin-bottom: 16px;
+}
+
+.video-feed-empty-cta {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.video-feed-empty-cta:hover {
+  background-color: var(--ft-primary-hover);
+}
+
+.video-feed-sentinel {
+  height: 1px;
+}
+
+.video-feed-caught-up {
+  text-align: center;
+  padding: 32px 0;
+  font-size: 14px;
+  color: #999;
+}
+
+.video-feed-inline-error {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.video-feed-inline-error-text {
+  font-size: 14px;
+  color: var(--ft-danger);
+  margin-bottom: 8px;
+}
+
+.video-feed-inline-retry-btn {
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-danger);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}

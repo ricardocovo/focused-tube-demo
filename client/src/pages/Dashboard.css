@@ -1,0 +1,218 @@
+.dashboard-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dashboard-page-title {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.dashboard-profile-panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--ft-border);
+  border-radius: 999px;
+  background: var(--ft-surface);
+  color: var(--ft-text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.dashboard-profile-panel-toggle:hover {
+  background: var(--ft-surface-hover);
+  color: var(--ft-text);
+}
+
+.dashboard-profile-panel-toggle:focus-visible {
+  outline: 2px solid var(--ft-border-focus);
+  outline-offset: 2px;
+}
+
+.dashboard-profile-panel-toggle:active {
+  transform: translateY(1px);
+}
+
+.dashboard-profile-panel-toggle--active {
+  background: rgba(255, 68, 68, 0.08);
+  border-color: rgba(255, 68, 68, 0.18);
+  color: var(--ft-primary);
+}
+
+.dashboard-profile-panel-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.dashboard-profile-panel-toggle span {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dashboard-profile-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 68, 68, 0.08), rgba(255, 255, 255, 0.88)),
+    var(--ft-surface);
+  border: 1px solid rgba(255, 68, 68, 0.1);
+  box-shadow: var(--ft-shadow-md);
+}
+
+.dashboard-profile-panel-copy {
+  min-width: 0;
+}
+
+.dashboard-profile-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ft-text-secondary);
+}
+
+.dashboard-profile-title {
+  margin: 0 0 8px;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.dashboard-profile-description {
+  margin: 0 0 14px;
+  max-width: 58ch;
+  color: var(--ft-text-secondary);
+}
+
+.dashboard-profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--ft-text-tertiary);
+  font-size: 13px;
+}
+
+.dashboard-profile-panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dashboard-profile-visibility {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(15, 15, 15, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.dashboard-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dashboard-profile-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--ft-border);
+  background: var(--ft-surface);
+  color: var(--ft-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dashboard-profile-link--primary {
+  border-color: transparent;
+  background: var(--ft-primary);
+  color: #fff;
+}
+
+.dashboard-profile-link--primary:hover {
+  background: var(--ft-primary-hover);
+}
+
+.dashboard-profile-link:hover {
+  background: var(--ft-surface-hover);
+}
+
+.dashboard-empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.dashboard-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.dashboard-empty-text {
+  font-size: 16px;
+  color: var(--ft-text-secondary);
+  margin-bottom: 16px;
+}
+
+.dashboard-empty-cta {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.dashboard-empty-cta:hover {
+  background-color: var(--ft-primary-hover);
+}
+
+@media (max-width: 800px) {
+  .dashboard-profile-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .dashboard-profile-panel-toggle {
+    background: ButtonFace;
+    border-color: ButtonBorder;
+    color: ButtonText;
+  }
+
+  .dashboard-profile-panel-toggle--active {
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+  }
+}

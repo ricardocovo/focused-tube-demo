@@ -1,0 +1,137 @@
+lockfile_version: '1'
+generated_at: '2026-06-08T14:52:54.887033+00:00'
+apm_version: 0.18.0
+dependencies:
+- repo_url: anthropics/skills
+  host: github.com
+  resolved_commit: c30d329f5814647c1e2f071020c1e8c1c9893ef1
+  virtual_path: skills/frontend-design
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/frontend-design
+  content_hash: sha256:063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67
+- repo_url: github/awesome-copilot
+  host: github.com
+  resolved_commit: 2ea321e4f1a4fb6017154c85b084bf3cc57dcf23
+  virtual_path: agents/github-actions-expert.agent.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/agents/github-actions-expert.agent.md
+  deployed_file_hashes:
+    .github/agents/github-actions-expert.agent.md: sha256:034ca7a8efd5118caa3ff3221b71e3e94dbd171919651152c50c553fa3a9d392
+  content_hash: sha256:6ebd8f3b7c87667280a5a819f1d78938e73e7602159dc8ccd77fe406e318fbd7
+- repo_url: github/awesome-copilot
+  host: github.com
+  resolved_commit: 2ea321e4f1a4fb6017154c85b084bf3cc57dcf23
+  virtual_path: instructions/markdown-gfm.instructions.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/instructions/markdown-gfm.instructions.md
+  deployed_file_hashes:
+    .github/instructions/markdown-gfm.instructions.md: sha256:5837441ad0c59cc7bfd35c0b803b9cb9ae32b8f4ab35dc1985b111fd28d5c5f8
+  content_hash: sha256:229c705e168b2fc6f74baa1ac25281357c7bee73c9a8636cb898ce0640572f1c
+- repo_url: github/awesome-copilot
+  host: github.com
+  resolved_commit: 2ea321e4f1a4fb6017154c85b084bf3cc57dcf23
+  virtual_path: instructions/nodejs-javascript-vitest.instructions.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/instructions/nodejs-javascript-vitest.instructions.md
+  deployed_file_hashes:
+    .github/instructions/nodejs-javascript-vitest.instructions.md: sha256:21096c5e1d50f64ed3907cd2982c0e00f6d7224ea6072ae90d42269dae4acc6a
+  content_hash: sha256:f4fef1f6f76d349031fbefebf03cb589a7261efceb33e89212d944e5ebb25902
+- repo_url: github/awesome-copilot
+  host: github.com
+  resolved_commit: 2ea321e4f1a4fb6017154c85b084bf3cc57dcf23
+  virtual_path: instructions/playwright-typescript.instructions.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/instructions/playwright-typescript.instructions.md
+  deployed_file_hashes:
+    .github/instructions/playwright-typescript.instructions.md: sha256:d53fc2423be9d890effb7d4da52bf85f0588fe24c2c9bd5f569aa1146d2ad3a1
+  content_hash: sha256:60a426896cc9bbb126c0b44545058a2896a8a08a85e740d78fbc4a4aa18a3670
+- repo_url: github/awesome-copilot
+  host: github.com
+  resolved_commit: 2ea321e4f1a4fb6017154c85b084bf3cc57dcf23
+  virtual_path: skills/javascript-typescript-jest
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/javascript-typescript-jest
+  content_hash: sha256:0073d19ab0275eb6a8200aced6789a53744667bd717b5d1f44ce708a1740e5d4
+- repo_url: github/awesome-copilot
+  host: github.com
+  resolved_commit: 2ea321e4f1a4fb6017154c85b084bf3cc57dcf23
+  virtual_path: skills/readme-blueprint-generator
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/readme-blueprint-generator
+  content_hash: sha256:e2c7dabf2e455794260f1516e2ceda6a82dc92a409578cc184fcb0f45bddca54
+- repo_url: ricardocovo/agent-primitives
+  host: github.com
+  resolved_commit: 93def752d206e0b2c9fadad4a68ae3a2efc6db2c
+  virtual_path: agents/gh-developer.agent.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/agents/gh-developer.agent.md
+  deployed_file_hashes:
+    .github/agents/gh-developer.agent.md: sha256:f3c072ceb2ac7e2d6230eac0fb7e2d8d68dfe215ab2086c0986250dccfc2cc84
+  content_hash: sha256:b4f4764e91655c2134003412a7c1b4f81c2a5031a68f2daff5d557e510f0e811
+- repo_url: ricardocovo/agent-primitives
+  host: github.com
+  resolved_commit: 93def752d206e0b2c9fadad4a68ae3a2efc6db2c
+  virtual_path: agents/gh-feature-spec-generator.agent.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/agents/gh-feature-spec-generator.agent.md
+  deployed_file_hashes:
+    .github/agents/gh-feature-spec-generator.agent.md: sha256:96273da880517095dee874524652afd42237ea179d067e2546243672cbc0b2bf
+  content_hash: sha256:5d5393977703093d9a66122c33a579b0258b91e1fbb91fc4a713dba54bd63c90
+- repo_url: ricardocovo/agent-primitives
+  host: github.com
+  resolved_commit: 7cff28085a29b2c8b7e99207b94d05d43f9cd50e
+  virtual_path: instructions/a11y.instructions.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/instructions/a11y.instructions.md
+  deployed_file_hashes:
+    .github/instructions/a11y.instructions.md: sha256:375e4e61f7dcdcab0f5147669fbb2a02ac369bd59a25002e93abbcc479d47183
+  content_hash: sha256:b2f4482a84ccd4fd97a6894776195ca171e0cc0ab9ce99f438ee53265e5169b6
+- repo_url: ricardocovo/agent-primitives
+  host: github.com
+  resolved_commit: 93def752d206e0b2c9fadad4a68ae3a2efc6db2c
+  virtual_path: instructions/mermaid-diagrams.instructions.md
+  is_virtual: true
+  package_type: apm_package
+  deployed_files:
+  - .github/instructions/mermaid-diagrams.instructions.md
+  deployed_file_hashes:
+    .github/instructions/mermaid-diagrams.instructions.md: sha256:5e89a98174b47c9075f6a51274dfdb617203daf658e1519319635824056391df
+  content_hash: sha256:3daf2834e487dcadc7a2278fe361bdcf44ff2b0efdfae715f6aece544093d59e
+- repo_url: ricardocovo/agent-primitives
+  host: github.com
+  resolved_commit: 93def752d206e0b2c9fadad4a68ae3a2efc6db2c
+  virtual_path: skills/google-authentication
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/google-authentication
+  content_hash: sha256:7dd3118660ea32cf3852269608b388de63cb16066ee358c0634f80a00cb35317
+- repo_url: ricardocovo/agent-primitives
+  host: github.com
+  resolved_commit: 93def752d206e0b2c9fadad4a68ae3a2efc6db2c
+  virtual_path: skills/youtube-api
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/youtube-api
+  content_hash: sha256:5071693a26060bfb87d91147492e5e081c2684cbf9c13d53d47c24a0b575e5a4

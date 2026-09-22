@@ -1,0 +1,21 @@
+name: focused-tube
+version: 1.0.0
+description: APM project for focused-tube
+author: Ricardo.Covo
+dependencies:
+  apm:
+  - ricardocovo/agent-primitives/agents/gh-developer.agent.md
+  - ricardocovo/agent-primitives/agents/gh-feature-spec-generator.agent.md
+  - ricardocovo/agent-primitives/instructions/mermaid-diagrams.instructions.md
+  - ricardocovo/agent-primitives/instructions/a11y.instructions.md
+  - ricardocovo/agent-primitives/skills/google-authentication
+  - ricardocovo/agent-primitives/skills/youtube-api
+  - github/awesome-copilot/agents/github-actions-expert.agent.md
+  - github/awesome-copilot/instructions/nodejs-javascript-vitest.instructions.md
+  - github/awesome-copilot/instructions/playwright-typescript.instructions.md
+  - github/awesome-copilot/instructions/markdown-gfm.instructions.md
+  - github/awesome-copilot/skills/readme-blueprint-generator
+  - github/awesome-copilot/skills/javascript-typescript-jest
+  - anthropics/skills/skills/frontend-design
+  mcp: []
+scripts: {}

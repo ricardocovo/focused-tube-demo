@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider        = "sqlserver"
+  url             = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id           String          @id @default(uuid())
+  googleId     String          @unique
+  email        String          @unique
+  name         String
+  avatarUrl    String?
+  accessToken  String          // TODO: Encrypt at rest (Phase 2)
+  refreshToken String          // TODO: Encrypt at rest (Phase 2)
+  profiles     Profile[]
+  follows      ProfileFollow[] @relation("UserFollows")
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Profile {
+  id        String           @id @default(uuid())
+  name      String
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channels  ProfileChannel[]
+  keywords  ProfileKeyword[]
+  followers ProfileFollow[]  @relation("ProfileFollowers")
+  isDefault Boolean          @default(false)
+  isPublic  Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([userId, name])
+}
+
+model ProfileChannel {
+  id               String  @id @default(uuid())
+  profileId        String
+  profile          Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  youtubeChannelId String
+  channelTitle     String
+  thumbnailUrl     String?
+
+  @@unique([profileId, youtubeChannelId])
+}
+
+model ProfileKeyword {
+  id        String  @id @default(uuid())
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  keyword   String
+
+  @@unique([profileId, keyword])
+}
+
+model ProfileFollow {
+  id         String   @id @default(uuid())
+  followerId String
+  profileId  String
+  follower   User     @relation("UserFollows", fields: [followerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  profile    Profile  @relation("ProfileFollowers", fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([followerId, profileId])
+}

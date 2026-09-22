@@ -1,0 +1,87 @@
+.settings-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.settings-menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--ft-border);
+  background: var(--ft-surface);
+  cursor: pointer;
+  transition: background 0.15s;
+  padding: 0;
+}
+
+.settings-menu-toggle:hover,
+.settings-menu-toggle--open {
+  background: var(--ft-surface-hover);
+}
+
+.settings-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  min-width: 180px;
+  background: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius-md);
+  box-shadow: var(--ft-shadow-lg);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.settings-menu-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ft-text);
+  background: none;
+  border: none;
+  text-decoration: none;
+  text-align: left;
+  font-family: var(--ft-font);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.1s;
+}
+
+.settings-menu-link:hover {
+  background: var(--ft-surface-hover);
+}
+
+.settings-menu-divider {
+  height: 1px;
+  background: var(--ft-border);
+}
+
+.settings-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ft-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--ft-font);
+  min-height: 44px;
+  transition: background 0.1s;
+}
+
+.settings-menu-btn:hover {
+  background: var(--ft-surface-hover);
+}

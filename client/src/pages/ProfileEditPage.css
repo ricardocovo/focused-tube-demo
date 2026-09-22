@@ -1,0 +1,208 @@
+.profile-edit-loading {
+  padding: 24px;
+  color: #999;
+}
+
+.profile-edit-not-found {
+  padding: 24px;
+}
+
+.profile-edit-not-found-text {
+  color: var(--ft-danger);
+}
+
+.profile-edit-not-found-back {
+  margin-top: 8px;
+  color: var(--ft-link);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.profile-edit-title {
+  color: var(--ft-text);
+  margin-bottom: 20px;
+}
+
+.profile-edit-error {
+  color: var(--ft-danger);
+  margin-bottom: 12px;
+}
+
+.profile-edit-name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 32px;
+}
+
+.profile-edit-label {
+  color: var(--ft-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-edit-name-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.profile-edit-input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--ft-border);
+  border-radius: 8px;
+  outline: none;
+  font-family: var(--ft-font);
+}
+
+.profile-edit-save-btn {
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border: none;
+  border-radius: 999px;
+}
+
+.profile-edit-save-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.profile-edit-save-btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.profile-edit-section {
+  margin-bottom: 32px;
+}
+
+.profile-edit-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.profile-edit-section-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.profile-edit-browse-link {
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.profile-edit-browse-link:hover {
+  background-color: var(--ft-primary-hover);
+}
+
+.profile-edit-empty-text {
+  color: var(--ft-text-tertiary);
+  font-size: 14px;
+}
+
+.profile-edit-channel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-edit-channel-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--ft-surface);
+  border-radius: 8px;
+  border: 1px solid var(--ft-border);
+}
+
+.profile-edit-channel-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-edit-channel-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.profile-edit-channel-name {
+  font-size: 14px;
+}
+
+.profile-edit-remove-btn {
+  padding: 4px 12px;
+  font-size: 12px;
+  color: var(--ft-danger);
+  background: transparent;
+  border: 1px solid var(--ft-danger);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* Visibility toggle */
+.profile-edit-visibility {
+  padding: 16px;
+  background: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius-md);
+}
+
+/* Hidden: search/keyword UI disabled — styles preserved for future re-enablement
+.profile-edit-keywords-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.profile-edit-keyword-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.profile-edit-add-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--ft-primary);
+  border: none;
+  border-radius: 999px;
+}
+
+.profile-edit-add-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-edit-add-btn:not(:disabled) {
+  cursor: pointer;
+}
+
+.profile-edit-keywords-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-edit-keyword-remove {
+  color: var(--ft-danger);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+}
+*/

@@ -1,0 +1,50 @@
+.video-card-skeleton {
+  cursor: default;
+}
+
+.video-card-skeleton-thumb {
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.video-card-skeleton-info {
+  padding: 12px;
+}
+
+.video-card-skeleton-title-1 {
+  height: 14px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  width: 90%;
+}
+
+.video-card-skeleton-title-2 {
+  height: 14px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 65%;
+}
+
+.video-card-skeleton-channel {
+  height: 12px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 50%;
+}
+
+.video-card-skeleton-meta {
+  display: flex;
+  justify-content: space-between;
+}
+
+.video-card-skeleton-date {
+  height: 12px;
+  border-radius: 4px;
+  width: 30%;
+}
+
+.video-card-skeleton-badge {
+  height: 18px;
+  border-radius: 12px;
+  width: 70px;
+}
