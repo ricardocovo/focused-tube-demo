@@ -4,6 +4,7 @@ import passport from './config/passport';
 import { corsMiddleware } from './middleware/cors';
 import { errorHandler } from './middleware/errorHandler';
 import { notFoundHandler } from './middleware/notFound';
+import { apiRateLimiter } from './middleware/rateLimit';
 import healthRouter from './routes/health';
 import pingRouter from './routes/ping';
 import authRouter from './routes/auth';
@@ -24,6 +25,7 @@ app.use(passport.initialize());
 // Routes
 app.use('/api/health', healthRouter);
 app.use('/api/ping', pingRouter);
+app.use('/api', apiRateLimiter);
 app.use('/api/auth', authRouter);
 app.use('/api/profiles', profilesRouter);
 app.use('/api/subscriptions', subscriptionsRouter);
