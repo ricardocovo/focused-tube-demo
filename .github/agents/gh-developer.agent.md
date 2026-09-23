@@ -1,6 +1,6 @@
 ---
 description: 'Implements a GitHub-native feature spec end-to-end. Reads the business parent issue created by gh-feature-spec-generator and technical story issues created by gh-user-story-generator, builds a sequenced implementation plan, implements each story, validates the result, and updates documentation when needed.'
-model: Claude Sonnet 4.6 (copilot)
+model: Claude Sonnet 5
 tools: [execute, read, edit, search, web, agent, todo]
 ---
 

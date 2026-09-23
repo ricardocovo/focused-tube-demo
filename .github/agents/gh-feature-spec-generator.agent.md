@@ -1,7 +1,7 @@
 ---
 name: gh-feature-spec-generator
 description: 'Creates a GitHub-native business feature specification as a parent issue, then automatically delegates repository-grounded technical user-story generation to gh-user-story-generator. No local specification files are created.'
-model: Claude Opus 4.8 (copilot)
+model: GPT-6 Sol (copilot)
 tools: [execute, read, agent]
 agents: [gh-user-story-generator]
 ---

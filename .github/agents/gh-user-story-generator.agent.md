@@ -1,7 +1,7 @@
 ---
 name: gh-user-story-generator
 description: 'Generates repository-grounded technical user story issues from a validated GitHub parent feature issue. Invoked by gh-feature-spec-generator for requirement traceability, implementation tasks, dependencies, validation details, sub-issue linking, and partial-run recovery.'
-model: Claude Opus 4.8 (copilot)
+model: GPT-6 Sol (copilot)
 tools: [execute, read, search]
 user-invocable: false
 disable-model-invocation: false
