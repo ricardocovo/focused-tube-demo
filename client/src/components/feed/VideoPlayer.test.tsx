@@ -18,7 +18,14 @@ describe('VideoPlayer', () => {
   beforeEach(() => {
     window.YT = {
       Player: class MockPlayer {
-        constructor(_elementId: string, _options: YTPlayerOptions) {}
+        constructor(elementId: string, options: YTPlayerOptions) {
+          const target = document.getElementById(elementId);
+          const iframe = document.createElement('iframe');
+          iframe.title = 'YouTube video player';
+          iframe.tabIndex = 0;
+          target?.replaceWith(iframe);
+          options.events?.onReady?.({ target: this });
+        }
 
         destroy() {
           return undefined;
@@ -58,6 +65,7 @@ describe('VideoPlayer', () => {
 
     const dialog = screen.getByRole('dialog', { name: video.title });
     const closeButton = screen.getByRole('button', { name: /close video player/i });
+    await screen.findByTitle('YouTube video player');
     const backgroundButton = screen.getByRole('button', { name: /background action/i });
     const focusableElements = Array.from(
       dialog.querySelectorAll<HTMLElement>(

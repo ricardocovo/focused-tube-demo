@@ -184,6 +184,19 @@
   margin: 2px 0 0;
 }
 
+.video-player-youtube-link {
+  display: inline-flex;
+  margin-top: 8px;
+  color: var(--ft-accent);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.video-player-youtube-link:focus-visible {
+  outline: 2px solid var(--ft-border-focus);
+  outline-offset: 2px;
+}
+
 /* Responsive: cap height on very small screens */
 @media (max-width: 479px) {
   .video-player-iframe-wrapper {
@@ -207,7 +220,8 @@
     border-bottom: 2px solid CanvasText;
   }
 
-  .video-player-fallback-link {
+  .video-player-fallback-link,
+  .video-player-youtube-link {
     border: 2px solid ButtonBorder;
     background: Canvas;
     color: CanvasText;

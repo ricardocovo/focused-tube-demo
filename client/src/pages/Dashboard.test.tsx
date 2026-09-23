@@ -176,10 +176,10 @@ describe('Dashboard', () => {
     expect(screen.getByRole('button', { name: 'Open video' })).toBeInTheDocument();
   });
 
-  it('wraps the feed in a labeled tabpanel when a profile is active', () => {
+  it('wraps the feed in a labeled region when a profile is active', () => {
     renderPage();
 
-    const feedTabPanel = screen.getByRole('tabpanel', { name: 'Feed videos' });
-    expect(feedTabPanel).toContainElement(screen.getByRole('button', { name: 'Open video' }));
+    const feedRegion = screen.getByRole('region', { name: 'Video feed' });
+    expect(feedRegion).toContainElement(screen.getByRole('button', { name: 'Open video' }));
   });
 });

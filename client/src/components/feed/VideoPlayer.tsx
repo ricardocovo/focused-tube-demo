@@ -293,6 +293,14 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
         <div className="video-player-info">
           <h2 id={VIDEO_PLAYER_TITLE_ID} className="video-player-title">{video.title}</h2>
           <p className="video-player-channel">{video.channelTitle}</p>
+          <a
+            href={youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="video-player-youtube-link"
+          >
+            Watch on YouTube
+          </a>
         </div>
       </div>
     </div>
