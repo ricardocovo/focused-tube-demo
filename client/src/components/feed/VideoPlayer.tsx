@@ -298,7 +298,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="video-player-info-link"
-            onClick={(e) => { e.preventDefault(); handleWatchOnYouTube(); }}
           >
             Watch on YouTube
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
