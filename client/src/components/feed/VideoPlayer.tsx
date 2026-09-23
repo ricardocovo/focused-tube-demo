@@ -293,6 +293,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
         <div className="video-player-info">
           <h2 id={VIDEO_PLAYER_TITLE_ID} className="video-player-title">{video.title}</h2>
           <p className="video-player-channel">{video.channelTitle}</p>
+          <a
+            href={youtubeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="video-player-info-link"
+            onClick={(e) => { e.preventDefault(); handleWatchOnYouTube(); }}
+          >
+            Watch on YouTube
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M6 3h7v7M13 3L6 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>

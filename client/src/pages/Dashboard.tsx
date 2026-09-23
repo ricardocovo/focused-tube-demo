@@ -197,7 +197,7 @@ export default function Dashboard() {
         )}
 
         {activeProfile ? (
-          <section aria-label="Video feed">
+          <section id="feed-tabpanel" role="tabpanel" aria-label="Feed videos">
             <VideoFeed profileId={activeProfile.id} onVideoSelect={handleVideoSelect} />
           </section>
         ) : (

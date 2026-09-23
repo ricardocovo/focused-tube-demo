@@ -184,6 +184,26 @@
   margin: 2px 0 0;
 }
 
+.video-player-info-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ft-text-secondary);
+  text-decoration: none;
+}
+
+.video-player-info-link:hover {
+  text-decoration: underline;
+}
+
+.video-player-info-link:focus-visible {
+  outline: 2px solid var(--ft-border-focus);
+  outline-offset: 2px;
+}
+
 /* Responsive: cap height on very small screens */
 @media (max-width: 479px) {
   .video-player-iframe-wrapper {
