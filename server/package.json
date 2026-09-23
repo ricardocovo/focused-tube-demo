@@ -23,7 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "qs": "^6.15.2"
+    "qs": "^6.16.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
