@@ -20,9 +20,18 @@ function formatDuration(iso: string): string {
   return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
 }
 
+function formatCount(count: string): string {
+  return new Intl.NumberFormat('en', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(Number(count));
+}
+
 const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ video, onSelect }) {
   const relativeTime = formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true });
   const duration = video.duration ? formatDuration(video.duration) : null;
+  const viewCount = video.viewCount === undefined ? null : formatCount(video.viewCount);
+  const likeCount = video.likeCount === undefined ? null : formatCount(video.likeCount);
 
   return (
     <button
@@ -51,6 +60,13 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ vide
         <p className="video-card-channel">{video.channelTitle}</p>
         <div className="video-card-meta">
           <span className="video-card-time">{relativeTime}</span>
+          {(viewCount || likeCount) && (
+            <span className="video-card-engagement">
+              {viewCount && <span>{viewCount} views</span>}
+              {viewCount && likeCount && <span aria-hidden="true"> · </span>}
+              {likeCount && <span>{likeCount} likes</span>}
+            </span>
+          )}
         </div>
       </div>
     </button>

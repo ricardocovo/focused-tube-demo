@@ -357,6 +357,7 @@ describe('filterEmbeddableVideos', () => {
             id: 'v1',
             status: { embeddable: true },
             contentDetails: { duration: 'PT4M13S' },
+            statistics: { viewCount: '1200', likeCount: '345' },
           },
         ],
       },
@@ -377,9 +378,15 @@ describe('filterEmbeddableVideos', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0]?.duration).toBe('PT4M13S');
+    expect(result[0]?.viewCount).toBe('1200');
+    expect(result[0]?.likeCount).toBe('345');
+    expect(mockVideosList).toHaveBeenCalledWith({
+      part: ['status', 'contentDetails', 'statistics'],
+      id: ['v1'],
+    });
     expect(mockedCacheSet).toHaveBeenCalledWith(
       'embeddable:v1',
-      { embeddable: true, duration: 'PT4M13S' },
+      { embeddable: true, duration: 'PT4M13S', viewCount: '1200', likeCount: '345' },
       3600,
     );
   });
@@ -403,6 +410,32 @@ describe('filterEmbeddableVideos', () => {
     expect(mockVideosList).not.toHaveBeenCalled();
     expect(result).toHaveLength(1);
     expect(result[0]?.duration).toBe('PT1M05S');
+    expect(result[0]?.viewCount).toBeUndefined();
+    expect(result[0]?.likeCount).toBeUndefined();
+  });
+
+  it('attaches engagement stats from cached metadata on cache hit', async () => {
+    mockedCacheGet.mockResolvedValue({
+      embeddable: true,
+      viewCount: '500',
+      likeCount: '20',
+    } as any);
+
+    const result = await filterEmbeddableVideos('user-1', [
+      {
+        videoId: 'v1',
+        title: 'Video 1',
+        description: 'desc',
+        channelId: 'ch1',
+        channelTitle: 'Channel 1',
+        thumbnailUrl: 'http://thumb.jpg',
+        publishedAt: '2024-01-01T00:00:00Z',
+        source: 'search',
+      },
+    ]);
+
+    expect(mockVideosList).not.toHaveBeenCalled();
+    expect(result[0]).toMatchObject({ viewCount: '500', likeCount: '20' });
   });
 
   it('supports legacy boolean cache entries without duration', async () => {

@@ -56,4 +56,22 @@ describe('VideoCard', () => {
     const { container } = render(<VideoCard video={video} />);
     expect(container.querySelector('.video-card-duration')).not.toBeInTheDocument();
   });
+
+  it('renders compact views and likes without changing the playback label', () => {
+    render(<VideoCard video={{ ...video, viewCount: '1200', likeCount: '345' }} />);
+
+    expect(screen.getByText('1.2K views')).toBeInTheDocument();
+    expect(screen.getByText('345 likes')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveAccessibleName('Play My Video Title by My Channel');
+  });
+
+  it('renders only available engagement stats', () => {
+    const { rerender, container } = render(<VideoCard video={{ ...video, viewCount: '0' }} />);
+
+    expect(screen.getByText('0 views')).toBeInTheDocument();
+    expect(screen.queryByText(/likes/)).not.toBeInTheDocument();
+
+    rerender(<VideoCard video={video} />);
+    expect(container.querySelector('.video-card-engagement')).not.toBeInTheDocument();
+  });
 });
