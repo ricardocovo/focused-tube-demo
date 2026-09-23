@@ -1,14 +1,15 @@
 version: 2
+
+registries:
+  microsoft-npm-proxy:
+    type: npm-registry
+    url: https://packagefeedproxy.microsoft.io/npm/
+    replaces-base: true
+
 updates:
   - package-ecosystem: "npm"
     directory: "/"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/server"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "github-actions"
-    directory: "/"
+    registries:
+      - microsoft-npm-proxy
     schedule:
       interval: "weekly"
