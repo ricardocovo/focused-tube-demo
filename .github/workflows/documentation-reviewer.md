@@ -5,10 +5,9 @@ description: |
 
 on:
   workflow_dispatch:
-
-#  pull_request:
-#    types: [opened, synchronize, reopened, ready_for_review]
-#    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
 
 # Permissions - what can this workflow access?
 # Write operations (creating issues, PRs, comments, etc.) are handled
