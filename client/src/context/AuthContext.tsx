@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api, { setAccessToken } from '../services/api';
+import api, { setAccessToken, resetCsrfToken } from '../services/api';
 import { User } from '../types/auth';
 
 interface AuthContextType {
@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     setUser(null);
     setAccessToken(null);
+    resetCsrfToken();
   }, []);
 
   return (

@@ -230,8 +230,9 @@ All routes are prefixed with `/api/`.
 | GET | `/api/auth/google` | Redirect to Google OAuth consent screen |
 | GET | `/api/auth/google/callback` | Handle OAuth callback, issue JWT |
 | GET | `/api/auth/me` | Get current user info |
-| POST | `/api/auth/refresh` | Rotate refresh token and issue a new access token |
-| POST | `/api/auth/logout` | Invalidate session |
+| GET | `/api/auth/csrf-token` | Issue (or return existing) CSRF token for the double-submit cookie check |
+| POST | `/api/auth/refresh` | Rotate refresh token and issue a new access token (requires `x-csrf-token` header) |
+| POST | `/api/auth/logout` | Invalidate session (requires `x-csrf-token` header) |
 
 ### Profiles
 

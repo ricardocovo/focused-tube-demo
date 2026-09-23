@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import passport from '../config/passport';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt';
 import { authenticateJwt } from '../middleware/auth';
+import { issueCsrfCookie, clearCsrfCookie, verifyCsrfToken } from '../middleware/csrf';
 import { config } from '../utils/config';
 import prisma from '../utils/prisma';
 
@@ -68,6 +69,10 @@ router.get(
       maxAge: 60 * 1000, // 60 seconds
     });
 
+    // Issue a double-submit CSRF cookie that the client must echo back as a
+    // header when calling the cookie-authenticated /refresh and /logout routes.
+    issueCsrfCookie(res);
+
     res.redirect(config.CLIENT_ORIGIN);
   }
 );
@@ -91,8 +96,17 @@ router.get('/me', authenticateJwt, async (req: Request, res: Response, next: Nex
   }
 });
 
+// GET /api/auth/csrf-token — issue (or return the existing) double-submit
+// CSRF token. This is a safe, read-only request so it needs no CSRF
+// protection itself; the client calls it before making state-changing
+// requests to /refresh or /logout so it has a token to echo back as a header.
+router.get('/csrf-token', (req: Request, res: Response) => {
+  const csrfToken = req.cookies?.ft_csrf_token || issueCsrfCookie(res);
+  res.json({ csrfToken });
+});
+
 // POST /api/auth/logout — clear session
-router.post('/logout', (_req: Request, res: Response) => {
+router.post('/logout', verifyCsrfToken, (_req: Request, res: Response) => {
   res.clearCookie('ft_refresh_token', {
     path: '/api/auth',
     sameSite: isProduction ? 'none' : 'lax',
@@ -103,11 +117,12 @@ router.post('/logout', (_req: Request, res: Response) => {
     sameSite: isProduction ? 'none' : 'lax',
     secure: isProduction,
   });
+  clearCsrfCookie(res);
   res.json({ message: 'Logged out' });
 });
 
 // POST /api/auth/refresh — rotate refresh token and issue new access token
-router.post('/refresh', async (req: Request, res: Response) => {
+router.post('/refresh', verifyCsrfToken, async (req: Request, res: Response) => {
   const token = req.cookies?.ft_refresh_token;
   console.log('[auth refresh] cookie present:', !!token, '| cookies keys:', Object.keys(req.cookies || {}));
 
@@ -141,6 +156,7 @@ router.post('/refresh', async (req: Request, res: Response) => {
       sameSite: isProduction ? 'none' : 'lax',
       secure: isProduction,
     });
+    clearCsrfCookie(res);
     res.status(401).json({ error: 'Invalid refresh token' });
   }
 });

@@ -106,8 +106,9 @@ All routes are prefixed with `/api/`. Files live in `server/src/routes/`.
 | `GET /api/auth/google` | Redirect to Google consent screen (detects new vs returning user) |
 | `GET /api/auth/google/callback` | Handle OAuth callback; set three cookies and redirect to client |
 | `GET /api/auth/me` | Return current user info (JWT-protected) |
-| `POST /api/auth/refresh` | Rotate refresh token and issue new access token |
-| `POST /api/auth/logout` | Clear all auth cookies |
+| `GET /api/auth/csrf-token` | Issue (or return existing) CSRF token for the double-submit cookie check |
+| `POST /api/auth/refresh` | Rotate refresh token and issue new access token (requires `x-csrf-token` header) |
+| `POST /api/auth/logout` | Clear all auth cookies (requires `x-csrf-token` header) |
 
 **Cookies set on callback:**
 
@@ -498,7 +499,7 @@ erDiagram
 | **Session cookies** | httpOnly, path-scoped | Refresh token cookie scoped to `/api/auth`; inaccessible to JavaScript |
 | **CORS** | Origin allowlist | Only `CLIENT_ORIGIN` allowed; `credentials: true` |
 | **XSS protection** | httpOnly cookies | JavaScript cannot read the refresh token |
-| **CSRF protection** | Bearer token in header | Access token sent via `Authorization` header, not auto-attached cookies |
+| **CSRF protection** | Bearer token in header + double-submit cookie | Access token sent via `Authorization` header, not auto-attached cookies; cookie-authenticated `POST /api/auth/refresh` and `POST /api/auth/logout` additionally require an `x-csrf-token` header matching an httpOnly `ft_csrf_token` cookie, fetched via `GET /api/auth/csrf-token` |
 
 ---
 
@@ -576,7 +577,7 @@ graph TB
 | **SQLite + Prisma** | Zero-config local database; type-safe queries; easy migrations |
 | **In-memory cache (not Redis)** | No external dependencies; sufficient for single-server deployment |
 | **httpOnly cookies for refresh tokens** | XSS protection — JavaScript cannot access the token |
-| **Access token in memory (not localStorage)** | Combined with Bearer header, prevents both XSS and CSRF attacks |
+| **Access token in memory (not localStorage)** | Combined with Bearer header and double-submit CSRF tokens, prevents both XSS and CSRF attacks |
 | **AES-256-GCM for stored tokens** | Authenticated encryption protects Google credentials at rest |
 | **`playlistItems.list` over `search.list` for channels** | 1 quota unit vs 100 — enables ~100x more channel fetches per day |
 | **`Promise.allSettled()` for feed assembly** | Partial failures don't block the entire feed; users see available results |
