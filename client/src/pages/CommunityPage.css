@@ -164,6 +164,24 @@
   background-color: var(--ft-surface);
 }
 
+.community-card-see-channels {
+  align-self: flex-start;
+  min-height: 36px;
+  padding: 6px 0;
+  color: var(--ft-link);
+  font-size: 14px;
+  font-family: var(--ft-font);
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.community-card-see-channels:hover {
+  color: var(--ft-link-hover);
+  text-decoration: underline;
+}
+
 /* Pagination */
 .community-pagination {
   display: flex;

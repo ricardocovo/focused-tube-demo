@@ -1,10 +1,15 @@
+import { useCallback, useRef, useState } from 'react';
 import AppHeader from '../components/ui/AppHeader';
+import CommunityChannelsDialog from '../components/profile/CommunityChannelsDialog';
+import type { CommunityProfile } from '../types/profile';
 import { useCommunity } from '../hooks/useCommunity';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './CommunityPage.css';
 
 export default function CommunityPage() {
   usePageTitle('Community Profiles');
+  const [selectedProfile, setSelectedProfile] = useState<CommunityProfile | null>(null);
+  const channelsTriggerRef = useRef<HTMLButtonElement | null>(null);
   const {
     profiles,
     total,
@@ -18,6 +23,7 @@ export default function CommunityPage() {
     handleFollow,
     handleUnfollow,
   } = useCommunity();
+  const closeChannelsDialog = useCallback(() => setSelectedProfile(null), []);
 
   return (
     <>
@@ -68,6 +74,20 @@ export default function CommunityPage() {
                       {profile._count.followers} {profile._count.followers === 1 ? 'follower' : 'followers'}
                     </span>
                   </div>
+                  {profile.channels.length > 0 && (
+                    <button
+                      ref={selectedProfile?.id === profile.id ? channelsTriggerRef : undefined}
+                      type="button"
+                      className="community-card-see-channels"
+                      onClick={() => {
+                        channelsTriggerRef.current = document.activeElement as HTMLButtonElement;
+                        setSelectedProfile(profile);
+                      }}
+                      aria-label={`See channels in ${profile.name}`}
+                    >
+                      See Channels
+                    </button>
+                  )}
                   {profile.isOwn ? (
                     <span
                       className="community-card-btn community-card-btn--own"
@@ -116,6 +136,14 @@ export default function CommunityPage() {
           </>
         )}
       </main>
+      {selectedProfile && (
+        <CommunityChannelsDialog
+          profileName={selectedProfile.name}
+          channelNames={selectedProfile.channels.map((channel) => channel.channelTitle)}
+          triggerRef={channelsTriggerRef}
+          onClose={closeChannelsDialog}
+        />
+      )}
     </>
   );
 }

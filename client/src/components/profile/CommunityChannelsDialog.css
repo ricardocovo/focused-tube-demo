@@ -1,0 +1,92 @@
+.community-channels-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 15, 15, 0.55);
+}
+
+.community-channels-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 480px);
+  max-height: min(80vh, 640px);
+  overflow: hidden;
+  padding: 20px;
+  color: var(--ft-text);
+  background: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius-lg);
+  box-shadow: var(--ft-shadow-lg);
+}
+
+.community-channels-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.community-channels-dialog h2 {
+  min-width: 0;
+  font-size: 20px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.community-channels-close {
+  flex: 0 0 auto;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--ft-text);
+  font-size: 28px;
+  line-height: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.community-channels-close:hover {
+  background: var(--ft-surface-hover);
+}
+
+.community-channels-list {
+  min-height: 0;
+  margin: 0;
+  padding: 0 8px 0 24px;
+  overflow-y: auto;
+}
+
+.community-channels-list li {
+  padding: 8px 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .community-channels-overlay {
+    align-items: flex-end;
+    padding: 8px;
+  }
+
+  .community-channels-dialog {
+    max-height: calc(100vh - 16px);
+    padding: 16px;
+  }
+}
+
+@media (forced-colors: active) {
+  .community-channels-dialog {
+    border: 1px solid CanvasText;
+  }
+
+  .community-channels-close {
+    border-color: ButtonBorder;
+  }
+}

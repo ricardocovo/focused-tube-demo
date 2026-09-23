@@ -18,6 +18,7 @@ export interface CommunityProfile {
   name: string;
   isPublic: boolean;
   user: { name: string; avatarUrl: string | null };
+  channels: Array<{ id: string; channelTitle: string }>;
   _count: { followers: number };
   isFollowing: boolean;
   isOwn?: boolean;
