@@ -164,6 +164,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
     window.open(youtubeUrl, '_blank', 'noopener,noreferrer');
   }, [youtubeUrl]);
 
+  const handleWatchLinkClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    handleWatchOnYouTube();
+  }, [handleWatchOnYouTube]);
+
   const showFallback = playerErrorCode !== null || apiLoadFailed;
   const playerErrorMessage =
     playerErrorCode !== null
@@ -276,7 +281,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="video-player-fallback-link"
-                  onClick={(e) => { e.preventDefault(); handleWatchOnYouTube(); }}
+                  onClick={handleWatchLinkClick}
                 >
                   Watch on YouTube
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -299,7 +304,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="video-player-watch-link"
-              onClick={(e) => { e.preventDefault(); handleWatchOnYouTube(); }}
+              onClick={handleWatchLinkClick}
             >
               Watch on YouTube
             </a>
