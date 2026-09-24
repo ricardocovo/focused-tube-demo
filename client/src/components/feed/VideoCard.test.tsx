@@ -66,7 +66,7 @@ describe('VideoCard', () => {
   });
 
   it('renders only available engagement statistics', () => {
-    render(<VideoCard video={{ ...video, viewCount: null, likeCount: 345 }} />);
+    render(<VideoCard video={{ ...video, viewCount: undefined, likeCount: 345 }} />);
 
     expect(screen.queryByText(/views$/)).not.toBeInTheDocument();
     expect(screen.getAllByText('345 likes')).toHaveLength(2);

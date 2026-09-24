@@ -26,11 +26,25 @@ const compactNumberFormatter = new Intl.NumberFormat(undefined, {
 });
 const numberFormatter = new Intl.NumberFormat();
 
-function formatStatistic(value: number): { compact: string; accessible: string } {
+interface FormattedStatistic {
+  compact: string;
+  accessible: string;
+}
+
+function formatStatistic(value: number): FormattedStatistic {
   return {
     compact: compactNumberFormatter.format(value),
     accessible: numberFormatter.format(value),
   };
+}
+
+function VideoStatistic({ statistic, label }: { statistic: FormattedStatistic; label: string }) {
+  return (
+    <span className="video-card-stat">
+      <span aria-hidden="true">{statistic.compact} {label}</span>
+      <span className="sr-only">{statistic.accessible} {label}</span>
+    </span>
+  );
 }
 
 const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ video, onSelect }) {
@@ -71,16 +85,10 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ vide
         <div className="video-card-meta">
           <span className="video-card-time">{relativeTime}</span>
           {viewCount && (
-            <span className="video-card-stat">
-              <span aria-hidden="true">{viewCount.compact} views</span>
-              <span className="sr-only">{viewCount.accessible} views</span>
-            </span>
+            <VideoStatistic statistic={viewCount} label="views" />
           )}
           {likeCount && (
-            <span className="video-card-stat">
-              <span aria-hidden="true">{likeCount.compact} likes</span>
-              <span className="sr-only">{likeCount.accessible} likes</span>
-            </span>
+            <VideoStatistic statistic={likeCount} label="likes" />
           )}
         </div>
       </div>

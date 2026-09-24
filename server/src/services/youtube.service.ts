@@ -416,6 +416,7 @@ export async function filterEmbeddableVideos(
 
   // Check cache for each video
   for (const video of videos) {
+    // Avoid duplicate cache/API work while preserving the caller's input ordering.
     if (seenVideoIds.has(video.videoId)) continue;
     seenVideoIds.add(video.videoId);
 
@@ -486,14 +487,15 @@ export async function filterEmbeddableVideos(
           }
         }
 
-        // Videos not returned by the API are likely deleted/private — mark non-embeddable
+        // Videos not returned by the API are likely deleted/private; retain legacy cached status.
         for (const id of batch) {
           if (!returnedIds.has(id)) {
-            embeddableMap.set(id, false);
+            const embeddable = embeddableMap.get(id) ?? false;
+            embeddableMap.set(id, embeddable);
             await cache.set<EmbeddableCacheEntry>(
               `embeddable:${id}`,
               {
-                embeddable: false,
+                embeddable,
                 statisticsFetched: true,
                 viewCount: null,
                 likeCount: null,
