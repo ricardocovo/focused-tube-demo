@@ -381,9 +381,11 @@ interface EmbeddableCacheEntry {
 }
 
 /**
- * Filter a list of videos to only those that are embeddable.
+ * Filter a list of videos to only those that are embeddable and enrich them
+ * with duration and engagement statistics.
  * Uses videos.list with part=status,contentDetails,statistics in batches of 50.
- * Caches results per video ID. Fails open on non-quota API errors.
+ * Caches results per video ID. Fails open on non-quota API errors and propagates
+ * quota errors to the caller.
  */
 export async function filterEmbeddableVideos(
   userId: string,
@@ -397,6 +399,20 @@ export async function filterEmbeddableVideos(
   const viewCountMap = new Map<string, number | null>();
   const likeCountMap = new Map<string, number | null>();
   const seenVideoIds = new Set<string>();
+  const withMetadata = (video: Video): Video => {
+    const duration = durationMap.get(video.videoId);
+    const hasStatistics = viewCountMap.has(video.videoId) || likeCountMap.has(video.videoId);
+    return {
+      ...video,
+      ...(duration ? { duration } : {}),
+      ...(hasStatistics
+        ? {
+            viewCount: viewCountMap.get(video.videoId) ?? null,
+            likeCount: likeCountMap.get(video.videoId) ?? null,
+          }
+        : {}),
+    };
+  };
 
   // Check cache for each video
   for (const video of videos) {
@@ -491,26 +507,13 @@ export async function filterEmbeddableVideos(
       if (isQuotaError(error)) throw error;
       // Fail open: if we can't check embeddability, return all videos
       console.warn('[filterEmbeddableVideos] Failed to check embeddability, returning all videos:', error);
-      return videos;
+      return videos.map(withMetadata);
     }
   }
 
   return videos
     .filter((v) => embeddableMap.get(v.videoId) !== false)
-    .map((v) => {
-      const dur = durationMap.get(v.videoId);
-      const hasStatistics = viewCountMap.has(v.videoId) || likeCountMap.has(v.videoId);
-      return {
-        ...v,
-        ...(dur ? { duration: dur } : {}),
-        ...(hasStatistics
-          ? {
-              viewCount: viewCountMap.get(v.videoId) ?? null,
-              likeCount: likeCountMap.get(v.videoId) ?? null,
-            }
-          : {}),
-      };
-    });
+    .map(withMetadata);
 }
 
 function parseStatistic(value: string | null | undefined): number | null {
