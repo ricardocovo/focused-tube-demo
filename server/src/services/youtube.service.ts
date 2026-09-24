@@ -383,7 +383,7 @@ interface EmbeddableCacheEntry {
 /**
  * Filter a list of videos to only those that are embeddable.
  * Uses videos.list with part=status,contentDetails,statistics in batches of 50.
- * Caches results per video ID. Fails open on API errors.
+ * Caches results per video ID. Fails open on non-quota API errors.
  */
 export async function filterEmbeddableVideos(
   userId: string,
@@ -476,7 +476,12 @@ export async function filterEmbeddableVideos(
             embeddableMap.set(id, false);
             await cache.set<EmbeddableCacheEntry>(
               `embeddable:${id}`,
-              { embeddable: false },
+              {
+                embeddable: false,
+                statisticsFetched: true,
+                viewCount: null,
+                likeCount: null,
+              },
               EMBEDDABLE_CACHE_TTL_SECONDS,
             );
           }

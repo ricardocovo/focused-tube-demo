@@ -20,13 +20,16 @@ function formatDuration(iso: string): string {
   return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
 }
 
+const compactNumberFormatter = new Intl.NumberFormat(undefined, {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+});
+const numberFormatter = new Intl.NumberFormat();
+
 function formatStatistic(value: number): { compact: string; accessible: string } {
   return {
-    compact: new Intl.NumberFormat('en-US', {
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }).format(value),
-    accessible: new Intl.NumberFormat('en-US').format(value),
+    compact: compactNumberFormatter.format(value),
+    accessible: numberFormatter.format(value),
   };
 }
 
