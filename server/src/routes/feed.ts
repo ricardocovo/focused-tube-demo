@@ -163,7 +163,19 @@ router.get('/:profileId', async (req: Request, res: Response, next: NextFunction
 
     // Filter out non-embeddable videos (fails open on API error)
     const deduped = Array.from(videoMap.values());
-    const embeddable = await filterEmbeddableVideos(userId, deduped);
+    let embeddable: Video[];
+    try {
+      embeddable = await filterEmbeddableVideos(userId, deduped);
+    } catch (error) {
+      if (isQuotaError(error)) {
+        res.status(429).json({
+          error: 'youtube_quota_exceeded',
+          message: 'YouTube API quota exhausted. Try again after midnight Pacific Time.',
+        });
+        return;
+      }
+      throw error;
+    }
 
     // Sort by publishedAt descending
     const videos = embeddable.sort(

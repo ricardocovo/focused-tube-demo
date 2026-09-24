@@ -56,4 +56,18 @@ describe('VideoCard', () => {
     const { container } = render(<VideoCard video={video} />);
     expect(container.querySelector('.video-card-duration')).not.toBeInTheDocument();
   });
+
+  it('renders compact view and like counts with accessible full values', () => {
+    render(<VideoCard video={{ ...video, viewCount: 1200, likeCount: 345 }} />);
+
+    expect(screen.getByLabelText('1,200 views')).toHaveTextContent('1.2K views');
+    expect(screen.getByLabelText('345 likes')).toHaveTextContent('345 likes');
+  });
+
+  it('renders only available engagement statistics', () => {
+    render(<VideoCard video={{ ...video, viewCount: null, likeCount: 345 }} />);
+
+    expect(screen.queryByText(/views$/)).not.toBeInTheDocument();
+    expect(screen.getByLabelText('345 likes')).toBeInTheDocument();
+  });
 });
