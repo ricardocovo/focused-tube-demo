@@ -160,7 +160,8 @@
   background: #cc0000;
 }
 
-.video-player-fallback-link:focus-visible {
+.video-player-fallback-link:focus-visible,
+.video-player-watch-link:focus-visible {
   outline: 2px solid var(--ft-border-focus);
   outline-offset: 2px;
 }
@@ -195,11 +196,6 @@
 
 .video-player-watch-link:hover {
   color: var(--ft-text);
-}
-
-.video-player-watch-link:focus-visible {
-  outline: 2px solid var(--ft-border-focus);
-  outline-offset: 2px;
 }
 
 /* Responsive: cap height on very small screens */
