@@ -483,7 +483,7 @@ export async function filterEmbeddableVideos(
         }
       }
     } catch (error) {
-      if (isQuotaExceededError(error)) throw error;
+      if (isQuotaError(error)) throw error;
       // Fail open: if we can't check embeddability, return all videos
       console.warn('[filterEmbeddableVideos] Failed to check embeddability, returning all videos:', error);
       return videos;
@@ -515,10 +515,17 @@ function parseStatistic(value: string | null | undefined): number | null {
   return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : null;
 }
 
-function isQuotaExceededError(error: unknown): boolean {
+export function isQuotaError(error: unknown): boolean {
   if (typeof error === 'object' && error !== null) {
-    const e = error as { code?: number; errors?: Array<{ reason?: string }> };
-    return e.code === 403 && e.errors?.some((entry) => entry.reason === 'quotaExceeded') === true;
+    const e = error as {
+      code?: number;
+      errors?: Array<{ reason?: string }>;
+      message?: string;
+    };
+    return e.code === 403 && (
+      e.errors?.some((entry) => entry.reason === 'quotaExceeded') === true ||
+      (typeof e.message === 'string' && e.message.toLowerCase().includes('quota'))
+    );
   }
   return false;
 }

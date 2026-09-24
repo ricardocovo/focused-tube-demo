@@ -1,21 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import prisma from '../utils/prisma';
 import { authenticateJwt } from '../middleware/auth';
-import { searchVideos, getChannelVideos, filterEmbeddableVideos, Video, isInsufficientScopeError } from '../services/youtube.service';
+import { searchVideos, getChannelVideos, filterEmbeddableVideos, Video, isInsufficientScopeError, isQuotaError } from '../services/youtube.service';
 import { config } from '../utils/config';
 import { quotaTracker, QUOTA_COSTS } from '../utils/quota';
 
 const router = Router();
 router.use(authenticateJwt);
-
-function isQuotaError(error: unknown): boolean {
-  if (typeof error === 'object' && error !== null) {
-    const e = error as any;
-    if (e.code === 403 && e.errors?.[0]?.reason === 'quotaExceeded') return true;
-    if (e.code === 403 && typeof e.message === 'string' && e.message.toLowerCase().includes('quota')) return true;
-  }
-  return false;
-}
 
 router.get('/:profileId', async (req: Request, res: Response, next: NextFunction) => {
   try {

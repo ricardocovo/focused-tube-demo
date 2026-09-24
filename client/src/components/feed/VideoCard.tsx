@@ -68,13 +68,15 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ vide
         <div className="video-card-meta">
           <span className="video-card-time">{relativeTime}</span>
           {viewCount && (
-            <span className="video-card-stat" aria-label={`${viewCount.accessible} views`}>
-              {viewCount.compact} views
+            <span className="video-card-stat">
+              <span aria-hidden="true">{viewCount.compact} views</span>
+              <span className="sr-only">{viewCount.accessible} views</span>
             </span>
           )}
           {likeCount && (
-            <span className="video-card-stat" aria-label={`${likeCount.accessible} likes`}>
-              {likeCount.compact} likes
+            <span className="video-card-stat">
+              <span aria-hidden="true">{likeCount.compact} likes</span>
+              <span className="sr-only">{likeCount.accessible} likes</span>
             </span>
           )}
         </div>

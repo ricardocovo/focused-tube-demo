@@ -397,7 +397,7 @@ describe('filterEmbeddableVideos', () => {
     );
   });
 
-  it('sets unavailable statistics to null without fabricating zero values', async () => {
+  it('preserves zero view counts and nulls missing like counts', async () => {
     mockedCacheGet.mockResolvedValue(undefined);
     mockedUserFindUnique.mockResolvedValue(mockUser as any);
     mockVideosList.mockResolvedValue({
