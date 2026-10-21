@@ -20,9 +20,42 @@ function formatDuration(iso: string): string {
   return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
 }
 
+const compactNumberFormatter = new Intl.NumberFormat(undefined, {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+});
+const numberFormatter = new Intl.NumberFormat();
+
+interface FormattedStatistic {
+  compact: string;
+  accessible: string;
+}
+
+function formatStatistic(value: number): FormattedStatistic {
+  return {
+    compact: compactNumberFormatter.format(value),
+    accessible: numberFormatter.format(value),
+  };
+}
+
+function VideoStatistic({ statistic, label }: { statistic: FormattedStatistic; label: string }) {
+  return (
+    <span className="video-card-stat">
+      <span aria-hidden="true">{statistic.compact} {label}</span>
+      <span className="sr-only">{statistic.accessible} {label}</span>
+    </span>
+  );
+}
+
 const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ video, onSelect }) {
   const relativeTime = formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true });
   const duration = video.duration ? formatDuration(video.duration) : null;
+  const viewCount = video.viewCount === null || video.viewCount === undefined
+    ? null
+    : formatStatistic(video.viewCount);
+  const likeCount = video.likeCount === null || video.likeCount === undefined
+    ? null
+    : formatStatistic(video.likeCount);
 
   return (
     <button
@@ -51,6 +84,12 @@ const VideoCard: React.FC<VideoCardProps> = React.memo(function VideoCard({ vide
         <p className="video-card-channel">{video.channelTitle}</p>
         <div className="video-card-meta">
           <span className="video-card-time">{relativeTime}</span>
+          {viewCount && (
+            <VideoStatistic statistic={viewCount} label="views" />
+          )}
+          {likeCount && (
+            <VideoStatistic statistic={likeCount} label="likes" />
+          )}
         </div>
       </div>
     </button>
