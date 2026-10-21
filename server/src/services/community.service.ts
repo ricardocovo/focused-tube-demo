@@ -25,6 +25,7 @@ export async function listPublicProfiles(params: {
       include: {
         user: { select: { name: true, avatarUrl: true } },
         _count: { select: { followers: true } },
+        channels: { select: { id: true, channelTitle: true, thumbnailUrl: true } },
         followers: {
           where: { followerId: params.currentUserId },
           select: { id: true },

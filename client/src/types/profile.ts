@@ -21,6 +21,13 @@ export interface CommunityProfile {
   _count: { followers: number };
   isFollowing: boolean;
   isOwn?: boolean;
+  channels: CommunityProfileChannel[];
+}
+
+export interface CommunityProfileChannel {
+  id: string;
+  channelTitle: string;
+  thumbnailUrl: string | null;
 }
 
 export interface CommunityProfilesResponse {

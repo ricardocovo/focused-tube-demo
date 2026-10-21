@@ -1,4 +1,6 @@
+import { useRef, useState } from 'react';
 import AppHeader from '../components/ui/AppHeader';
+import CommunityChannelsView from '../components/community/CommunityChannelsView';
 import { useCommunity } from '../hooks/useCommunity';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './CommunityPage.css';
@@ -18,6 +20,16 @@ export default function CommunityPage() {
     handleFollow,
     handleUnfollow,
   } = useCommunity();
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+  const selectedProfile = profiles.find((p) => p.id === selectedProfileId) ?? null;
+
+  const closeChannels = () => {
+    setSelectedProfileId(null);
+    const opener = openerRef.current;
+    openerRef.current = null;
+    if (opener?.isConnected) opener.focus();
+  };
 
   return (
     <>
@@ -68,6 +80,18 @@ export default function CommunityPage() {
                       {profile._count.followers} {profile._count.followers === 1 ? 'follower' : 'followers'}
                     </span>
                   </div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      openerRef.current = e.currentTarget;
+                      setSelectedProfileId(profile.id);
+                    }}
+                    className="community-card-btn community-card-btn--secondary"
+                    aria-label={`See channels in ${profile.name}`}
+                    aria-haspopup="dialog"
+                  >
+                    See Channels
+                  </button>
                   {profile.isOwn ? (
                     <span
                       className="community-card-btn community-card-btn--own"
@@ -116,6 +140,9 @@ export default function CommunityPage() {
           </>
         )}
       </main>
+      {selectedProfile && (
+        <CommunityChannelsView profile={selectedProfile} onClose={closeChannels} />
+      )}
     </>
   );
 }

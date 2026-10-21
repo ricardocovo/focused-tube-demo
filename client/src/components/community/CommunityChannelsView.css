@@ -1,0 +1,111 @@
+.community-channels-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.community-channels-view {
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--ft-surface);
+  color: var(--ft-text);
+  border: 1px solid var(--ft-border);
+  border-radius: 24px;
+  box-shadow: var(--ft-shadow-md);
+  box-sizing: border-box;
+}
+
+.community-channels-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.community-channels-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.community-channels-close {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--ft-font);
+  color: var(--ft-text);
+  background: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius-full);
+  min-height: 36px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.community-channels-close:hover {
+  background: var(--ft-surface-hover);
+}
+
+.community-channels-close:focus-visible {
+  outline: 2px solid var(--ft-border-focus);
+  outline-offset: 2px;
+}
+
+.community-channels-empty {
+  margin: 0;
+  color: var(--ft-text-secondary);
+}
+
+.community-channels-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.community-channels-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  min-width: 0;
+}
+
+.community-channels-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.community-channels-name {
+  font-size: 14px;
+  color: var(--ft-text);
+  overflow-wrap: anywhere;
+}
+
+@media (forced-colors: active) {
+  .community-channels-view,
+  .community-channels-close {
+    border: 1px solid CanvasText;
+  }
+
+  .community-channels-close:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

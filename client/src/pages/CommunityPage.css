@@ -150,6 +150,21 @@
   color: var(--ft-danger);
 }
 
+.community-card-btn:focus-visible {
+  outline: 2px solid var(--ft-border-focus);
+  outline-offset: 2px;
+}
+
+.community-card-btn--secondary {
+  color: var(--ft-link);
+  background-color: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+}
+
+.community-card-btn--secondary:hover {
+  background-color: var(--ft-surface-hover);
+}
+
 .community-card-btn--own {
   display: inline-flex;
   align-items: center;
@@ -220,7 +235,8 @@
     border: 1px solid ButtonBorder;
   }
 
-  .community-search-input:focus {
+  .community-search-input:focus,
+  .community-card-btn:focus-visible {
     outline: 2px solid Highlight;
   }
 }
