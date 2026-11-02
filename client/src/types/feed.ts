@@ -7,6 +7,8 @@ export interface FeedVideo {
   publishedAt: string;
   source: 'subscription' | 'search';
   duration?: string;
+  viewCount?: number | null;
+  likeCount?: number | null;
 }
 
 export interface FeedResponse {

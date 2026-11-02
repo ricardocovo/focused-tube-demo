@@ -150,6 +150,7 @@ Business logic lives in `server/src/services/`, keeping route handlers thin.
 - **`getChannelVideos()`** — converts channel ID (`UC*`) to uploads playlist ID (`UU*`), calls `playlistItems.list` (1 quota unit), post-filters by `publishedAfter`, and caches results
 - **`searchVideos()`** — calls `search.list` (100 quota units) with keyword and `publishedAfter` filter, caches results, bypasses cache for paginated requests
 - **`getUserSubscriptions()`** — paginates through all user subscriptions (50 per page)
+- **`filterEmbeddableVideos()`** — enriches deduplicated video IDs through `videos.list` in batches of up to 50, requesting only embeddability, duration, views, and likes. The existing metadata lookup also supplies statistics, avoiding additional requests. Non-quota lookup failures retain the logged fail-open behavior; quota exhaustion is propagated to the feed route.
 - **Token refresh** — detects 401 responses, refreshes the Google access token, persists the new encrypted token to the database, and retries the original request
 - **Error detection** — dedicated helpers for `insufficientPermissions`, `quotaExceeded`, unauthorized, and playlist-not-found errors
 
@@ -374,6 +375,9 @@ Key design choices:
 - `Promise.allSettled()` ensures partial results are returned even if some API calls fail
 - Videos from subscriptions take priority over search results during deduplication
 - Videos are filtered to the last 14 days (configurable via `FEED_PUBLISHED_AFTER_DAYS`)
+- After deduplication and before date sorting, canonical metadata filters non-embeddable videos and attaches duration plus optional `viewCount?: number | null` and `likeCount?: number | null` fields. Missing or invalid statistics are omitted, not converted to zero; genuine zero counts are retained. The response remains `{ videos, nextPageToken }`.
+- Video cards display compact views and likes beside publication time, omitting each unavailable statistic independently. The play button keeps its existing accessible name and provides a full-count accessible description.
+- Upstream YouTube `quotaExceeded` errors, including those from metadata lookup, return HTTP 429 with `{ "error": "youtube_quota_exceeded", "message": "YouTube API quota exhausted. Try again after midnight Pacific Time." }`.
 
 ---
 
@@ -387,11 +391,13 @@ An in-memory LRU cache (`server/src/utils/cache.ts`) with TTL support:
 |------|-----|------------|
 | Channel videos (`playlistItems.list`) | 10 minutes | 1 unit/call |
 | Keyword search results (`search.list`) | 5 minutes | 100 units/call |
+| Per-video embeddability, duration, and statistics (`videos.list`) | 1 hour | 1 unit/call, up to 50 IDs |
 
 - Maximum 5000 entries (configurable via `CACHE_MAX_ENTRIES`)
 - LRU eviction when limit is reached
 - Automatic expired-entry sweep every 60 seconds
 - Paginated requests bypass the cache to avoid stale continuation tokens
+- Per-video metadata uses `embeddable:<videoId>` keys across feed requests, including paginated requests. Legacy boolean or duration-only entries remain usable until their existing expiry; statistics are omitted until refreshed. Unavailable statistics do not trigger immediate refetching. Counts reflect the cached snapshot rather than real-time engagement.
 
 ### Client-Side Cache
 

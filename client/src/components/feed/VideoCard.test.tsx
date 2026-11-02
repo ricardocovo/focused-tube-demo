@@ -56,4 +56,63 @@ describe('VideoCard', () => {
     const { container } = render(<VideoCard video={video} />);
     expect(container.querySelector('.video-card-duration')).not.toBeInTheDocument();
   });
+
+  it('shows compact statistics and describes exact counts without changing the play name', () => {
+    render(<VideoCard video={{ ...video, viewCount: 1234, likeCount: 2345678 }} />);
+    expect(screen.getByText('1.2K views')).toBeInTheDocument();
+    expect(screen.getByText('2.3M likes')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: `Play ${video.title} by ${video.channelTitle}` }))
+      .toHaveAccessibleDescription('1,234 views, 2,345,678 likes');
+  });
+
+  it.each([
+    [{ viewCount: 1 }, '1 view'],
+    [{ likeCount: 1 }, '1 like'],
+    [{ viewCount: 0, likeCount: 0 }, '0 views, 0 likes'],
+    [{ viewCount: null, likeCount: 12 }, '12 likes'],
+    [{ viewCount: 12, likeCount: null }, '12 views'],
+  ])('renders only available statistics %j', (counts, description) => {
+    render(<VideoCard video={{ ...video, ...counts }} />);
+    const button = screen.getByRole('button', { name: /Play My Video Title/ });
+    expect(button).toHaveAccessibleDescription(description);
+    expect(button).toHaveTextContent(/ago/);
+    if (!('viewCount' in counts) || counts.viewCount == null) {
+      expect(screen.queryByText(/\bviews?\b/)).not.toBeInTheDocument();
+    }
+    if (!('likeCount' in counts) || counts.likeCount == null) {
+      expect(screen.queryByText(/\blikes?\b/)).not.toBeInTheDocument();
+    }
+  });
+
+  it.each([{}, { viewCount: null, likeCount: null }, { viewCount: -1, likeCount: NaN }])(
+    'omits unavailable or invalid statistics %j',
+    (counts) => {
+      render(<VideoCard video={{ ...video, ...counts }} />);
+      expect(screen.getByRole('button')).not.toHaveAttribute('aria-describedby');
+      expect(screen.queryByText(/\b(?:views?|likes?)\b/)).not.toBeInTheDocument();
+    },
+  );
+
+  it('uses unique statistic descriptions for each card', () => {
+    render(<>
+      <VideoCard video={{ ...video, viewCount: 12 }} />
+      <VideoCard video={{ ...video, videoId: 'other', title: 'Other video', likeCount: 34 }} />
+    </>);
+    expect(screen.getByRole('button', { name: /My Video Title/ })).toHaveAccessibleDescription('12 views');
+    expect(screen.getByRole('button', { name: /Other video/ })).toHaveAccessibleDescription('34 likes');
+  });
+
+  it('keeps keyboard activation and duration when statistics are present', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    const withStats = { ...video, viewCount: 1234, likeCount: 12, duration: 'PT4M13S' };
+    render(<VideoCard video={withStats} onSelect={onSelect} />);
+    await user.tab();
+    expect(screen.getByRole('button')).toHaveFocus();
+    await user.keyboard('{Enter}');
+    await user.keyboard(' ');
+    expect(onSelect).toHaveBeenCalledTimes(2);
+    expect(onSelect).toHaveBeenLastCalledWith(withStats);
+    expect(screen.getByText('4:13')).toBeInTheDocument();
+  });
 });

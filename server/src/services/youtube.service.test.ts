@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockPlaylistItemsList = vi.fn();
 const mockSearchList = vi.fn();
@@ -68,6 +68,8 @@ import {
   searchVideos,
   getUserSubscriptions,
   filterEmbeddableVideos,
+  isQuotaError,
+  type Video,
 } from './youtube.service';
 
 const mockedUserFindUnique = vi.mocked(prisma.user.findUnique);
@@ -343,8 +345,31 @@ describe('getUserSubscriptions', () => {
 });
 
 describe('filterEmbeddableVideos', () => {
+  const makeVideo = (videoId = 'v1'): Video => ({
+    videoId,
+    title: 'Video',
+    description: '',
+    channelId: 'ch1',
+    channelTitle: 'Channel',
+    thumbnailUrl: 'http://thumb.jpg',
+    publishedAt: '2024-01-01T00:00:00Z',
+    source: 'subscription',
+  });
+
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
+    mockedUserFindUnique.mockResolvedValue({
+      ...mockUser,
+      googleId: 'google-1',
+      name: 'Test User',
+      avatarUrl: null,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01'),
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('attaches duration from videos.list response and caches embeddable metadata', async () => {
@@ -424,5 +449,146 @@ describe('filterEmbeddableVideos', () => {
     expect(mockVideosList).not.toHaveBeenCalled();
     expect(result).toHaveLength(1);
     expect(result[0]?.duration).toBeUndefined();
+  });
+
+  it('fetches and caches both statistics with the existing metadata lookup', async () => {
+    mockVideosList.mockResolvedValue({
+      data: { items: [{
+        id: 'v1',
+        status: { embeddable: true },
+        contentDetails: { duration: 'PT4M13S' },
+        statistics: { viewCount: '1234', likeCount: '56' },
+      }] },
+    });
+
+    const [result] = await filterEmbeddableVideos('user-1', [makeVideo()]);
+
+    expect(result).toMatchObject({ duration: 'PT4M13S', viewCount: 1234, likeCount: 56 });
+    expect(mockVideosList).toHaveBeenCalledExactlyOnceWith({
+      part: ['status', 'contentDetails', 'statistics'],
+      fields: 'items(id,status/embeddable,contentDetails/duration,statistics(viewCount,likeCount))',
+      id: ['v1'],
+    });
+    expect(mockedCacheSet).toHaveBeenCalledWith(
+      'embeddable:v1',
+      { embeddable: true, duration: 'PT4M13S', viewCount: 1234, likeCount: 56 },
+      3600,
+    );
+  });
+
+  it.each([
+    [{ viewCount: '0', likeCount: '0' }, 0, 0],
+    [{ viewCount: '123' }, 123, undefined],
+    [{ likeCount: '45' }, undefined, 45],
+    [{ viewCount: null, likeCount: null }, undefined, undefined],
+    [undefined, undefined, undefined],
+  ])('handles partial statistics %j without fabricating counts', async (statistics, viewCount, likeCount) => {
+    mockVideosList.mockResolvedValue({
+      data: { items: [{ id: 'v1', status: { embeddable: true }, statistics }] },
+    });
+    const [result] = await filterEmbeddableVideos('user-1', [makeVideo()]);
+    expect(result?.viewCount).toBe(viewCount);
+    expect(result?.likeCount).toBe(likeCount);
+    expect(result?.duration).toBeUndefined();
+  });
+
+  it.each(['', ' ', '-1', '1.2', '12oops', 'NaN', 'Infinity', '1e3', '9007199254740992'])(
+    'omits invalid or unsafe count %j',
+    async (value) => {
+      mockVideosList.mockResolvedValue({
+        data: { items: [{
+          id: 'v1', status: { embeddable: true },
+          statistics: { viewCount: value, likeCount: value },
+        }] },
+      });
+      const [result] = await filterEmbeddableVideos('user-1', [makeVideo()]);
+      expect(result?.viewCount).toBeUndefined();
+      expect(result?.likeCount).toBeUndefined();
+    },
+  );
+
+  it('restores cached statistics without requiring a duration', async () => {
+    mockedCacheGet.mockResolvedValue({ embeddable: true, viewCount: 1234, likeCount: 0 });
+    const [result] = await filterEmbeddableVideos('user-1', [makeVideo()]);
+    expect(result).toMatchObject({ viewCount: 1234, likeCount: 0 });
+    expect(mockVideosList).not.toHaveBeenCalled();
+  });
+
+  it('fetches only unique cache misses while retaining cached metadata', async () => {
+    mockedCacheGet.mockImplementation(async (key) =>
+      key === 'embeddable:cached'
+        ? { embeddable: true, duration: 'PT1M', viewCount: 10 }
+        : undefined);
+    mockVideosList.mockResolvedValue({
+      data: { items: [{ id: 'new', status: { embeddable: true }, statistics: { likeCount: '2' } }] },
+    });
+    const videos = [makeVideo('cached'), makeVideo('new'), makeVideo('new')];
+    const result = await filterEmbeddableVideos('user-1', videos);
+    expect(mockVideosList.mock.calls[0]?.[0].id).toEqual(['new']);
+    expect(mockedCacheGet).toHaveBeenCalledTimes(2);
+    expect(result[0]).toMatchObject({ viewCount: 10, duration: 'PT1M' });
+    expect(result.slice(1).map((video) => video.likeCount)).toEqual([2, 2]);
+    expect(videos[0]?.viewCount).toBeUndefined();
+  });
+
+  it.each([50, 51])('batches %i unique video IDs at a maximum of 50', async (count) => {
+    mockVideosList.mockImplementation(async ({ id }: { id: string[] }) => ({
+      data: { items: id.map((videoId) => ({
+        id: videoId, status: { embeddable: true }, statistics: { viewCount: '1' },
+      })) },
+    }));
+    const videos = Array.from({ length: count }, (_, i) => makeVideo(`v${i}`));
+    const result = await filterEmbeddableVideos('user-1', videos);
+    expect(result).toHaveLength(count);
+    expect(mockVideosList).toHaveBeenCalledTimes(Math.ceil(count / 50));
+    expect(mockVideosList.mock.calls.map(([params]) => params.id.length))
+      .toEqual(count === 50 ? [50] : [50, 1]);
+    expect(result.every((video) => video.viewCount === 1)).toBe(true);
+  });
+
+  it('skips all lookups for an empty feed', async () => {
+    expect(await filterEmbeddableVideos('user-1', [])).toEqual([]);
+    expect(mockedCacheGet).not.toHaveBeenCalled();
+    expect(mockVideosList).not.toHaveBeenCalled();
+  });
+
+  it('filters non-embeddable and API-omitted videos and caches the result', async () => {
+    mockVideosList.mockResolvedValue({
+      data: { items: [{ id: 'blocked', status: { embeddable: false } }] },
+    });
+    expect(await filterEmbeddableVideos('user-1', [makeVideo('blocked'), makeVideo('missing')]))
+      .toEqual([]);
+    expect(mockedCacheSet).toHaveBeenCalledWith('embeddable:missing', { embeddable: false }, 3600);
+  });
+
+  it('preserves fail-open behavior with a warning for non-quota failures', async () => {
+    const error = new Error('Temporary outage');
+    mockVideosList.mockRejectedValue(error);
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const videos = [makeVideo()];
+    expect(await filterEmbeddableVideos('user-1', videos)).toBe(videos);
+    expect(warning).toHaveBeenCalledWith(expect.any(String), error);
+  });
+
+  it('propagates quota errors rather than returning a successful feed', async () => {
+    const error = { code: 403, errors: [{ reason: 'quotaExceeded' }] };
+    mockVideosList.mockRejectedValue(error);
+    await expect(filterEmbeddableVideos('user-1', [makeVideo()])).rejects.toBe(error);
+  });
+});
+
+describe('isQuotaError', () => {
+  it.each([
+    { code: 403, errors: [{ reason: 'quotaExceeded' }] },
+    { code: 403, errors: [{ reason: 'other' }, { reason: 'quotaExceeded' }] },
+    { response: { status: 403, data: { error: { errors: [{ reason: 'quotaExceeded' }] } } } },
+  ])('recognizes Google quota error shape %j', (error) => {
+    expect(isQuotaError(error)).toBe(true);
+  });
+
+  it.each([null, 'quota', {}, { code: 500 }, {
+    code: 403, errors: [{ reason: 'forbidden' }], message: 'Not a quotaExceeded error',
+  }])('does not classify unrelated failure %j as quota exhaustion', (error) => {
+    expect(isQuotaError(error)).toBe(false);
   });
 });

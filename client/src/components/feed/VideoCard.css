@@ -56,7 +56,13 @@ button.video-card:focus-visible {
   padding: 12px;
 }
 
-.video-card-time {
+.video-card .video-card-meta {
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.video-card-time,
+.video-card-stat {
   font-size: 12px;
   color: var(--ft-text-tertiary);
 }

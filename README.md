@@ -10,6 +10,7 @@ A YouTube overlay web app that lets users create curated profiles, each with sub
 - **Profile-based curation** — create multiple named profiles, each with its own set of channels and keywords
 - **Community profiles** — make profiles public, discover public profiles, and follow or unfollow profiles from other users
 - **Combined video feed** — view a deduplicated, date-sorted feed combining subscription uploads and keyword search results
+- **Video engagement stats** — see compact view and like counts when YouTube provides them, with full counts available to assistive technology; counts may be cached for up to an hour
 - **Source tagging** — every video is tagged as `"subscription"` or `"search"` so you know where it came from
 - **In-app video player** — click a video card to watch inline via a sticky YouTube embed without leaving the app; Escape or close button dismisses the player and restores focus
 - **Feed filtering** — filter the feed by source (`?source=subscriptions` or `?source=search`)
