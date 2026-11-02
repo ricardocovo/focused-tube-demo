@@ -217,6 +217,10 @@ Generate secrets with:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
+### Secrets in GitHub Copilot app worktrees
+
+`.env` is gitignored, so new worktrees don't include it. Keep your master `.env` in the main checkout. When a session is created, the **Copy .env** script in `.github/github-app.yml` copies it into the new worktree. If the worktree already has a `.env`, the script leaves it alone. For worktrees that already exist, copy `.env` manually or rerun the script.
+
 ---
 
 ## API Routes
