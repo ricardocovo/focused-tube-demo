@@ -116,6 +116,13 @@
   color: var(--ft-text-tertiary);
 }
 
+.community-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
 .community-card-btn {
   width: 100%;
   padding: 10px 16px;
@@ -132,6 +139,22 @@
   white-space: nowrap;
   transition: background 0.15s;
   flex-shrink: 0;
+  flex: 1 1 0;
+}
+
+.community-card-btn:focus-visible {
+  outline: 2px solid var(--ft-border-focus);
+  outline-offset: 2px;
+}
+
+.community-card-btn--secondary {
+  color: var(--ft-text);
+  background-color: var(--ft-surface);
+  border: 1px solid var(--ft-border);
+}
+
+.community-card-btn--secondary:hover {
+  background-color: var(--ft-surface-hover);
 }
 
 .community-card-btn:hover {
@@ -208,6 +231,10 @@
     align-self: stretch;
     text-align: center;
   }
+
+  .community-card-actions {
+    flex-direction: column;
+  }
 }
 
 /* Forced colors support */
@@ -218,6 +245,10 @@
 
   .community-card-btn {
     border: 1px solid ButtonBorder;
+  }
+
+  .community-card-btn:focus-visible {
+    outline: 2px solid Highlight;
   }
 
   .community-search-input:focus {

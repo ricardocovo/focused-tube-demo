@@ -8,7 +8,7 @@ A YouTube overlay web app that lets users create curated profiles, each with sub
 
 - **Google OAuth sign-in** — authenticate with your Google account and import your YouTube subscriptions
 - **Profile-based curation** — create multiple named profiles, each with its own set of channels and keywords
-- **Community profiles** — make profiles public, discover public profiles, and follow or unfollow profiles from other users
+- **Community profiles** — make profiles public, discover public profiles, follow or unfollow profiles from other users, and inspect any profile's channels from its card via an accessible "See Channels" view
 - **Combined video feed** — view a deduplicated, date-sorted feed combining subscription uploads and keyword search results
 - **Source tagging** — every video is tagged as `"subscription"` or `"search"` so you know where it came from
 - **In-app video player** — click a video card to watch inline via a sticky YouTube embed without leaving the app; Escape or close button dismisses the player and restores focus
@@ -264,7 +264,7 @@ All routes are prefixed with `/api/`.
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/community/profiles` | Discover public profiles, with optional keyword search |
+| GET | `/api/community/profiles` | Discover public profiles, with optional keyword search. Each profile includes its own channel names and available thumbnails. |
 | POST | `/api/community/profiles/:profileId/follow` | Follow a public profile |
 | DELETE | `/api/community/profiles/:profileId/follow` | Unfollow a profile |
 | GET | `/api/community/following` | List profiles followed by the current user |

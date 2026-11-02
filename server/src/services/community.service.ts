@@ -29,6 +29,9 @@ export async function listPublicProfiles(params: {
           where: { followerId: params.currentUserId },
           select: { id: true },
         },
+        channels: {
+          select: { id: true, channelTitle: true, thumbnailUrl: true },
+        },
       },
       skip: (page - 1) * limit,
       take: limit,

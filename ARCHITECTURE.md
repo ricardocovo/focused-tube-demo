@@ -125,7 +125,7 @@ Full CRUD for profiles plus channel and keyword management. All routes validate 
 
 | Endpoint | Description |
 |----------|-------------|
-| `GET /api/community/profiles` | List public profiles (paginated, keyword search via `?keyword=`, excludes caller's own). Returns `isFollowing` per profile. |
+| `GET /api/community/profiles` | List public profiles (paginated, keyword search via `?keyword=`, excludes caller's own). Returns `isFollowing` per profile, plus each profile's own `channels` (name and available thumbnail). |
 | `POST /api/community/profiles/:profileId/follow` | Follow a public profile (validates: exists, public, not own, not duplicate) |
 | `DELETE /api/community/profiles/:profileId/follow` | Unfollow a profile |
 | `GET /api/community/following` | List profiles the current user follows with owner info |
@@ -283,6 +283,9 @@ components/
 │   ├── VideoFeed.tsx               # Video list + infinite scroll
 │   ├── VideoPlayer.tsx             # Sticky in-app YouTube iframe player
 │   └── VideoPlayer.css             # Player styles (sticky, responsive, a11y)
+├── community/
+│   ├── CommunityChannelsDialog.tsx # Accessible modal listing a selected profile's channels
+│   └── CommunityChannelsDialog.css # Dialog styles (responsive, forced-colors, reduced-motion)
 ├── profile/
 │   ├── ProfileSwitcher.tsx         # Profile selector dropdown (owned + followed)
 │   └── ProfileSwitcherSkeleton.tsx # Loading skeleton

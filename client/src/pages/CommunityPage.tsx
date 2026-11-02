@@ -1,6 +1,9 @@
+import { useRef, useState } from 'react';
 import AppHeader from '../components/ui/AppHeader';
+import CommunityChannelsDialog from '../components/community/CommunityChannelsDialog';
 import { useCommunity } from '../hooks/useCommunity';
 import { usePageTitle } from '../hooks/usePageTitle';
+import type { CommunityProfile } from '../types/profile';
 import './CommunityPage.css';
 
 export default function CommunityPage() {
@@ -18,6 +21,26 @@ export default function CommunityPage() {
     handleFollow,
     handleUnfollow,
   } = useCommunity();
+
+  const [selectedProfile, setSelectedProfile] = useState<CommunityProfile | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const handleOpenChannels = (profile: CommunityProfile, opener: HTMLElement) => {
+    openerRef.current = opener;
+    setSelectedProfile(profile);
+  };
+
+  const handleCloseChannels = () => {
+    setSelectedProfile(null);
+    const opener = openerRef.current;
+    if (opener && document.body.contains(opener)) {
+      opener.focus();
+    } else {
+      searchInputRef.current?.focus();
+    }
+    openerRef.current = null;
+  };
 
   return (
     <>
@@ -38,6 +61,7 @@ export default function CommunityPage() {
           </label>
           <input
             id="community-search-input"
+            ref={searchInputRef}
             type="search"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
@@ -68,26 +92,36 @@ export default function CommunityPage() {
                       {profile._count.followers} {profile._count.followers === 1 ? 'follower' : 'followers'}
                     </span>
                   </div>
-                  {profile.isOwn ? (
-                    <span
-                      className="community-card-btn community-card-btn--own"
-                      aria-label={`${profile.name} is your profile`}
-                    >
-                      Your profile
-                    </span>
-                  ) : (
+                  <div className="community-card-actions">
+                    {profile.isOwn ? (
+                      <span
+                        className="community-card-btn community-card-btn--own"
+                        aria-label={`${profile.name} is your profile`}
+                      >
+                        Your profile
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => profile.isFollowing
+                          ? handleUnfollow(profile.id)
+                          : handleFollow(profile.id)
+                        }
+                        className={profile.isFollowing ? 'community-card-btn community-card-btn--following' : 'community-card-btn'}
+                        aria-label={`${profile.isFollowing ? 'Unfollow' : 'Follow'} ${profile.name}`}
+                      >
+                        {profile.isFollowing ? 'Unfollow' : 'Follow'}
+                      </button>
+                    )}
                     <button
                       type="button"
-                      onClick={() => profile.isFollowing
-                        ? handleUnfollow(profile.id)
-                        : handleFollow(profile.id)
-                      }
-                      className={profile.isFollowing ? 'community-card-btn community-card-btn--following' : 'community-card-btn'}
-                      aria-label={`${profile.isFollowing ? 'Unfollow' : 'Follow'} ${profile.name}`}
+                      onClick={(e) => handleOpenChannels(profile, e.currentTarget)}
+                      className="community-card-btn community-card-btn--secondary"
+                      aria-label={`See channels for ${profile.name}`}
                     >
-                      {profile.isFollowing ? 'Unfollow' : 'Follow'}
+                      See Channels
                     </button>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -116,6 +150,9 @@ export default function CommunityPage() {
           </>
         )}
       </main>
+      {selectedProfile && (
+        <CommunityChannelsDialog profile={selectedProfile} onClose={handleCloseChannels} />
+      )}
     </>
   );
 }
