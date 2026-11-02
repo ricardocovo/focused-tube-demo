@@ -1,0 +1,13 @@
+scripts:
+  - name: Copy .env
+    command: node -e "const fs=require('fs'),path=require('path'),src=path.join(process.env.COPILOT_ROOT_PATH,'.env'),dest=path.join(process.env.COPILOT_WORKSPACE_PATH,'.env');if(path.resolve(src)===path.resolve(dest)||fs.existsSync(dest))console.log('.env already present');else if(!fs.existsSync(src))console.warn('No .env found at '+src+'. Create it from .env.example.');else{fs.copyFileSync(src,dest);console.log('Copied .env from '+src)}"
+    triggers:
+      - session.create
+  - name: Install dependencies
+    command: npm ci
+    triggers:
+      - session.create
+  - name: Run
+    command: npm run dev
+
+server_ready_pattern: 'Local:\s+(https?://\S+)'
