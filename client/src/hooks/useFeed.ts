@@ -56,7 +56,7 @@ export function useFeed(profileId: string | null, source?: string): UseFeedResul
       feedCache.set(profileId, source, res.videos, res.nextPageToken);
     } catch (err: any) {
       if (id !== requestIdRef.current) return;
-      const serverMessage = err?.response?.data?.error;
+      const serverMessage = err?.response?.data?.message || err?.response?.data?.error;
       setError(serverMessage || (err instanceof Error ? err.message : 'Failed to load feed'));
       setHasLoadedOnce(true);
     } finally {
@@ -87,7 +87,7 @@ export function useFeed(profileId: string | null, source?: string): UseFeedResul
       setNextPageToken(res.nextPageToken);
     } catch (err: any) {
       if (id !== requestIdRef.current) return;
-      const serverMessage = err?.response?.data?.error;
+      const serverMessage = err?.response?.data?.message || err?.response?.data?.error;
       setError(serverMessage || (err instanceof Error ? err.message : 'Failed to load more videos'));
     } finally {
       if (id === requestIdRef.current) {

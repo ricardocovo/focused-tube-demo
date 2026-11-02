@@ -101,6 +101,23 @@ describe('useFeed', () => {
     expect(result.current.videos).toEqual([]);
   });
 
+  it('prefers the server message over the error code when the initial feed request fails', async () => {
+    mockFetchFeed.mockRejectedValueOnce({
+      response: {
+        data: {
+          error: 'youtube_quota_exceeded',
+          message: 'YouTube API quota exhausted. Try again after midnight Pacific Time.',
+        },
+      },
+    });
+
+    const { result } = renderHook(() => useFeed('profile-1'));
+
+    await waitFor(() => {
+      expect(result.current.error).toBe('YouTube API quota exhausted. Try again after midnight Pacific Time.');
+    });
+  });
+
   it('loads more videos when loadMore is called', async () => {
     const page1 = [makeVideo('v1')];
     const page2 = [makeVideo('v2')];
@@ -156,5 +173,34 @@ describe('useFeed', () => {
 
     const videoIds = result.current.videos.map((v) => v.videoId);
     expect(videoIds).toEqual(['v1', 'v2', 'v3']);
+  });
+
+  it('prefers the server message over the error code when loading more videos fails', async () => {
+    mockFetchFeed
+      .mockResolvedValueOnce({ videos: [makeVideo('v1')], nextPageToken: 'page-2-token' })
+      .mockRejectedValueOnce({
+        response: {
+          data: {
+            error: 'youtube_quota_exceeded',
+            message: 'YouTube API quota exhausted. Try again after midnight Pacific Time.',
+          },
+        },
+      });
+
+    const { result } = renderHook(() => useFeed('profile-1'));
+
+    await waitFor(() => {
+      expect(result.current.hasLoadedOnce).toBe(true);
+    });
+
+    await act(async () => {
+      result.current.loadMore();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isFetchingMore).toBe(false);
+    });
+
+    expect(result.current.error).toBe('YouTube API quota exhausted. Try again after midnight Pacific Time.');
   });
 });
