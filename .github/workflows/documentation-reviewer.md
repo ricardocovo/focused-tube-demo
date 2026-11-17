@@ -16,10 +16,7 @@ permissions:
   contents: read
   pull-requests: read
 
-engine:
-  id: copilot
-  model-routing: false
-  model: "${{ vars.GH_AW_MODEL_AGENT_COPILOT || vars.GH_AW_DEFAULT_MODEL_COPILOT || 'claude-sonnet-4.6' }}"
+model: "${{ vars.GH_AW_MODEL_AGENT_COPILOT || vars.GH_AW_DEFAULT_MODEL_COPILOT || 'github-copilot/claude-sonnet-4.6' }}"
 
 tools:
   github:
