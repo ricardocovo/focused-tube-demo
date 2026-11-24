@@ -28,7 +28,7 @@ steps:
       persist-credentials: false
 
   - name: Install repo-metadata-generator pack
-    uses: microsoft/apm-action@v1.10.0
+    uses: microsoft/apm-action@v1.12.0
     with:
       isolated: 'true'
       dependencies: |

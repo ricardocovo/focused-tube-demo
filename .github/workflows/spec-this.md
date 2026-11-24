@@ -4,6 +4,9 @@ on:
     name: spec-this
     events: [issues]
 
+concurrency:
+  job-discriminator: "${{ github.run_id }}"
+
 permissions:
   contents: read
   issues: read
